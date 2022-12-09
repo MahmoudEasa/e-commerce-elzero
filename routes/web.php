@@ -1,8 +1,11 @@
 <?php
 
-use App\Http\Controllers\Front\NewsController;
-use App\Http\Controllers\Front\UserController;
+use App\Http\Controllers\Auth\SocialController;
+use App\Http\Controllers\ProfileController;
+use App\Http\Controllers\Offers\CrudController;
+use Illuminate\Foundation\Application;
 use Illuminate\Support\Facades\Route;
+use Inertia\Inertia;
 
 /*
 |--------------------------------------------------------------------------
@@ -15,47 +18,31 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-// Login
-Route::get('login', function () {
-    return 'Login';
-})->name('login');
-
-
-Route::group(['prefix' => '/'], function () {
-    Route::get('/', function () {
-        return view('pages.Home');
-    })->name('home');
-
-    Route::get('/about-me', function () {
-        return view('pages.about', ['name' => 'Osama']);
-    })->name('about');
-
-    Route::view('/contact-me', 'pages.contact', [
-        'name' => 'Mahmoud'
-    ])->name('contact');
-
-    Route::get('/category/{id?}', function ($id = '') {
-        $cats = [
-            '1' => 'Games',
-            '2' => 'Programming',
-            '3' => 'Books',
-        ];
-
-        return view('pages.category', [
-            'id' => $cats[$id] ?? 'This Id Is Not Found'
-        ]);
-    })->name('category');
+Route::get('/', function () {
+    return Inertia::render('Welcome', [
+        'canLogin' => Route::has('login'),
+        'canRegister' => Route::has('register'),
+        'laravelVersion' => Application::VERSION,
+        'phpVersion' => PHP_VERSION,
+    ]);
 });
 
+Route::get('/dashboard', function () {
+    return Inertia::render('Dashboard');
+})->middleware(['auth', 'verified'])->name('dashboard');
 
-// Controller
-Route::group(['prefix' => 'users'], function () {
-    Route::get('/', [UserController::class, 'UserHome']);
-    Route::get('show', [UserController::class, 'ShowUserName']);
-    Route::delete('delete', [UserController::class, 'DeleteUserName']);
-    Route::get('edit', [UserController::class, 'EditUserName']);
-    Route::put('update', [UserController::class, 'UpdateUserName']);
+Route::get('/redirect/{service}', [SocialController::class, 'redirect']);
+Route::get('/callback/{service}', [SocialController::class, 'callback']);
+
+
+Route::middleware('auth')->group(function () {
+    Route::group(['prefix' => 'offers'], function () {
+        Route::get('/getOffer', [CrudController::class, 'getOffers'])->name('getOffers');
+        Route::post('/createOffer', [CrudController::class, 'store'])->name('createOffer');
+    });
+    Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
+    Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
+    Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
 });
 
-// Resource
-Route::resource('news', NewsController::class);
+require __DIR__.'/auth.php';

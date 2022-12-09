@@ -8,24 +8,44 @@
         public function __construct()
         {
             // Run Middleware On All Methods Without UserHome Method
-            $this->middleware('auth')->except('UserHome');
+            // $this->middleware('auth')->except('HomePage');
         }
 
-        public function ShowUserName() {
-            return 'Show UserName';
-        }
-        public function DeleteUserName() {
-            return 'Delete UserName';
-        }
-        public function EditUserName() {
-            return 'Edit UserName';
-        }
-        public function UpdateUserName() {
-            return 'Update UserName';
-        }
+        // Login
+        // public function Login()
+        // {
+        //     return 'Login';
+        // }
+        // public function LandingPage()
+        // {
+        //     return view('pages.landingPage');
+        // }
 
-        public function UserHome()
-        {
-            return 'User Home';
-        }
+
+        // Pages
+        // public function HomePage()
+        // {
+        //     return view('pages.Home');
+        // }
+        // public function AboutPage()
+        // {
+        //     return view('pages.about', ['name' => 'Osama']);
+        // }
+        // public function ContactPage()
+        // {
+        //     return view('pages.contact');
+        // }
+        // public function CategoryPage($id = '')
+        // {
+        //     $cats = [
+        //         '1' => 'Games',
+        //         '2' => 'Programming',
+        //         '3' => 'Books',
+        //     ];
+
+        //     $data = [];
+        //     $data["id"] = $cats[$id] ?? 'This Id Is Not Found';
+        //     return view('pages.category', $data);
+        // }
+
     }
