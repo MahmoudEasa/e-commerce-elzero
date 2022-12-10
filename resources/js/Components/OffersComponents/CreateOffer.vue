@@ -14,12 +14,17 @@ const form = useForm({
     offerName: '',
     price: '',
     details: '',
+    success: false,
 });
 
 const createOffer = () => {
+    form.success = false;
     form.post(route('createOffer'), {
         preserveScroll: true,
-        onSuccess: () => form.reset(),
+        onSuccess: () => {
+            form.reset();
+            form.success = true;
+        },
         onError: () => {
             if (form.errors.offerName) {
                 form.reset('offerName');
@@ -43,6 +48,12 @@ const createOffer = () => {
         <header>
             <h2 class="text-lg font-medium text-gray-900">Create Offer</h2>
         </header>
+        
+        <div
+            v-if="form.success"
+            style="background-color:#4caf50d1;border-radius: 10px;"
+            class="mt-6 p-4 text-white font-bold space-y-6"
+            >Created Successfully</div>
 
         <form @submit.prevent="createOffer" class="mt-6 space-y-6">
             <div>

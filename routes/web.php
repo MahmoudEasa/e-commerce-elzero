@@ -18,6 +18,7 @@ use Inertia\Inertia;
 |
 */
 
+
 Route::get('/', function () {
     return Inertia::render('Welcome', [
         'canLogin' => Route::has('login'),
@@ -37,9 +38,12 @@ Route::get('/callback/{service}', [SocialController::class, 'callback']);
 
 Route::middleware('auth')->group(function () {
     Route::group(['prefix' => 'offers'], function () {
+        Route::get('/', [CrudController::class, 'show'])->name('offers');
+        Route::get('/create', [CrudController::class, 'create'])->name('offer.create');
         Route::get('/getOffer', [CrudController::class, 'getOffers'])->name('getOffers');
         Route::post('/createOffer', [CrudController::class, 'store'])->name('createOffer');
     });
+
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
