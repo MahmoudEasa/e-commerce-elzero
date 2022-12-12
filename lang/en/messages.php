@@ -15,8 +15,8 @@ return [
 
     "hello gus" => 'Hello GUS',
     "welcome" => 'WELCOME',
+
     "offers" => 'Offers',
-    "createOffer" => 'Create Offer',
     "offerName" => 'Offer Name',
     "offerName_en" => 'Offer Name EN',
     "offerName_ar" => 'Offer Name AR',
@@ -24,12 +24,22 @@ return [
     "details" => 'Details',
     "details_en" => 'Details EN',
     "details_ar" => 'Details AR',
-    "create" => 'Create',
-    "createdSuccessfully" => 'Created Successfully.',
-    "created" => 'Created.',
+
     "dashboard" => 'Dashboard',
     "actions" => 'Actions',
+
+    "createOffer" => 'Create Offer',
+    "updateOffer" => 'Update Offer',
+
+    "created" => 'Created.',
+    "updated" => 'Updated.',
+
+    "create" => 'Create',
+    "update" => 'Update',
     "delete" => 'Delete',
+
+    "createdSuccessfully" => 'Created Successfully.',
+    "updatedSuccessfully" => 'Updated Successfully.',
 
 
     "required" => 'The :attribute field is required.',

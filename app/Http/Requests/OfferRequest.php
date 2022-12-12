@@ -3,6 +3,7 @@
 namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Validation\Rule;
 
 class OfferRequest extends FormRequest
 {
@@ -24,8 +25,8 @@ class OfferRequest extends FormRequest
     public function rules()
     {
         return [
-            'offerName_en' => ['bail', 'required', 'unique:offers', 'max:100'],
-            'offerName_ar' => ['bail', 'required', 'unique:offers', 'max:100'],
+            'offerName_en' => ['bail', 'required', Rule::unique('offers')->ignore($this->id), 'max:100'],
+            'offerName_ar' => ['bail', 'required', Rule::unique('offers')->ignore($this->id), 'max:100'],
             'price' => ['required', 'numeric', 'max:1000'],
             'details_en' => ['required'],
             'details_ar' => ['required'],

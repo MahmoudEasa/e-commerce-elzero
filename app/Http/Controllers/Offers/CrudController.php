@@ -14,7 +14,6 @@ use Inertia\Inertia;
 
 class CrudController extends Controller
 {
-
     public function getLocalizedLangsForNavBar() {
         $getLocalized = '';
         foreach(LaravelLocalization::getSupportedLocales() as $localeCode => $properties) {
@@ -23,7 +22,7 @@ class CrudController extends Controller
         return $getLocalized;
     }
 
-    public function show()
+    public function showOffer()
     {
         $currentLocale = LaravelLocalization::getCurrentLocale();
         $allOffers = Offer::select(
@@ -40,7 +39,7 @@ class CrudController extends Controller
         ]);
     }
 
-    public function create()
+    public function createOffer()
     {
         return Inertia::render('Offers/offers', [
             'createOffer' => Route::has('offer.create'),
@@ -49,21 +48,40 @@ class CrudController extends Controller
         ]);
     }
 
-    public function getOffers()
+    public function storeOffer(OfferRequest $request)
     {
-        $allOffers = Offer::get();
-        $selectOffers = Offer::select('id', 'offerName')->get();
-        return $allOffers;
+        Offer::create($request -> all());
     }
 
-    public function store(OfferRequest $request)
+    public function editOffer($id)
     {
-        $validated = $request->validated();
-        Offer::create($validated);
-    }
+        $offer = Offer::find($id);
 
-    public function delete($id)
+        if($offer) {
+            return Inertia::render('Offers/offers', [
+                'createOffer' => true,
+                'langs' => __('messages'),
+                'getLocalizedURL' => $this->getLocalizedLangsForNavBar(),
+                'update' => true,
+                'updateData' => $offer,
+            ]);
+        }else {
+            return redirect('offers');
+        }
+    }
+    public function updateOffer(OfferRequest $request)
     {
-        Offer::destroy($id);
+        $offer = Offer::find($request->id);
+        $offer->update($request -> all());
+        return redirect()->route('offers');
+    }
+    public function deleteOffer($id)
+    {
+        $offer = Offer::find($id);
+        if($offer) {
+            $offer->delete();
+        }else {
+            return redirect()->back();
+        }
     }
 }

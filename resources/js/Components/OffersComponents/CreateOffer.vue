@@ -13,17 +13,18 @@ const detailsEnInput = ref(null);
 const detailsArInput = ref(null);
 
 const form = useForm({
-    offerName_en: "",
-    offerName_ar: "",
-    price: "",
-    details_en: "",
-    details_ar: "",
+    offerName_en: props.updateData.offerName_en,
+    offerName_ar: props.updateData.offerName_ar,
+    price: props.updateData.price,
+    details_en: props.updateData.details_en,
+    details_ar: props.updateData.details_ar,
+    id: props.updateData.id,
     success: false,
 });
 
-const createOffer = () => {
+const createOffer = (routName, id = "") => {
     form.success = false;
-    form.post(route("createOffer"), {
+    form.post(route(routName, id), {
         preserveScroll: true,
         onSuccess: () => {
             form.reset();
@@ -54,15 +55,30 @@ const createOffer = () => {
     });
 };
 
-defineProps({
+const props = defineProps({
     langs: Object,
+    update: Boolean,
+    updateData: {
+        type: Object,
+        default: {
+            id: "",
+            offerName_en: "",
+            offerName_ar: "",
+            price: "",
+            details_en: "",
+            details_ar: "",
+        },
+    },
 });
 </script>
 
 <template>
     <section>
         <header>
-            <h2 class="text-lg font-medium text-gray-900">
+            <h2 v-if="update" class="text-lg font-medium text-gray-900">
+                {{ langs.updateOffer }}
+            </h2>
+            <h2 v-else class="text-lg font-medium text-gray-900">
                 {{ langs.createOffer }}
             </h2>
         </header>
@@ -72,10 +88,18 @@ defineProps({
             style="background-color: #4caf50d1; border-radius: 10px"
             class="mt-6 p-4 text-white font-bold space-y-6"
         >
-            {{ langs.createdSuccessfully }}
+            <p v-if="update">{{ langs.updatedSuccessfully }}</p>
+            <p v-else>{{ langs.createdSuccessfully }}</p>
         </div>
 
-        <form @submit.prevent="createOffer" class="mt-6 space-y-6">
+        <form
+            @submit.prevent="
+                update
+                    ? createOffer('updateOffer', updateData.id)
+                    : createOffer('createOffer')
+            "
+            class="mt-6 space-y-6"
+        >
             <div>
                 <InputLabel for="offerName_en" :value="langs.offerName_en" />
 
@@ -150,7 +174,11 @@ defineProps({
             </div>
 
             <div class="flex items-center gap-4">
-                <PrimaryButton :disabled="form.processing">{{
+                <PrimaryButton v-if="update" :disabled="form.processing">{{
+                    langs.update
+                }}</PrimaryButton>
+
+                <PrimaryButton v-else :disabled="form.processing">{{
                     langs.create
                 }}</PrimaryButton>
 
@@ -160,7 +188,14 @@ defineProps({
                     class="transition ease-in-out"
                 >
                     <p
-                        v-if="form.recentlySuccessful"
+                        v-if="form.recentlySuccessful && update"
+                        class="text-sm text-gray-600"
+                    >
+                        {{ langs.updated }}
+                    </p>
+
+                    <p
+                        v-else-if="form.recentlySuccessful"
                         class="text-sm text-gray-600"
                     >
                         {{ langs.created }}

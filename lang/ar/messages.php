@@ -15,8 +15,8 @@ return [
 
     "hello gus" => 'أهلاً بكم',
     "welcome" => 'مرحباً',
+
     "offers" => 'العروض',
-    "createOffer" => 'إضافة عرض',
     "offerName" => 'أسم العرض',
     "offerName_en" => 'أسم العرض بالإنجليزية',
     "offerName_ar" => 'أسم العرض بالعربية',
@@ -24,12 +24,23 @@ return [
     "details_en" => 'التفاصيل بالإنجليزية',
     "details_ar" => 'التفاصيل بالعربية',
     "price" => 'السعر',
-    "create" => 'إضافة',
-    "createdSuccessfully" => 'تم إضافة الحقل بنجاح.',
-    "created" => 'تمت الإضافة.',
+
     "dashboard" => 'لوحة التحكم',
     "actions" => 'إجراءات',
+
+    "createOffer" => 'إضافة عرض',
+    "updateOffer" => 'تحديث العرض',
+
+    "created" => 'تمت الإضافة.',
+    "updated" => 'تم التحديث.',
+
+    "create" => 'إضافة',
+    "update" => 'تحديث',
     "delete" => 'حذف',
+
+    "createdSuccessfully" => 'تم إضافة العرض بنجاح.',
+    "updatedSuccessfully" => 'تم تحديث العرض بنجاح.',
+
 
     "required" => 'الحقل مطلوب.',
     "unique" => 'الحقل موجود بالفعل.',

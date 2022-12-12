@@ -1,6 +1,7 @@
 <script setup>
 import AuthenticatedLayout from "@/Layouts/AuthenticatedLayout.vue";
 import CreateOffer from "../../Components/OffersComponents/CreateOffer.vue";
+import AllOffers from "../../Components/OffersComponents/AllOffers.vue";
 import PrimaryButton from "@/Components/PrimaryButton.vue";
 import NavLink from "@/Components/NavLink.vue";
 import { Head } from "@inertiajs/inertia-vue3";
@@ -9,6 +10,8 @@ defineProps({
     createOffer: Boolean,
     langs: Object,
     allOffers: Object,
+    update: Boolean,
+    updateData: Object,
 });
 </script>
 
@@ -37,59 +40,19 @@ defineProps({
                     v-if="createOffer"
                     class="p-4 sm:p-8 bg-white shadow sm:rounded-lg"
                 >
-                    <CreateOffer class="max-w-xl" :langs="langs" />
+                    <CreateOffer
+                        class="max-w-xl"
+                        :langs="langs"
+                        :update="update"
+                        :updateData="updateData"
+                    />
                 </div>
 
-                <div v-else class="p-4 sm:p-8 bg-white shadow sm:rounded-lg">
-                    <table
-                        class="w-full border-collapse border border-slate-500"
-                    >
-                        <thead class="bg-gray-700 text-white">
-                            <tr>
-                                <th class="border border-slate-600 p-2">#</th>
-                                <th class="border border-slate-600 p-2">
-                                    {{ langs.offerName }}
-                                </th>
-                                <th class="border border-slate-600 p-2">
-                                    {{ langs.price }}
-                                </th>
-                                <th class="border border-slate-600 p-2">
-                                    {{ langs.details }}
-                                </th>
-                                <th class="border border-slate-600 p-2">
-                                    {{ langs.actions }}
-                                </th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <tr v-for="(offer, i) in allOffers" :key="offer.id">
-                                <td
-                                    class="border border-slate-700 p-2 text-center"
-                                >
-                                    {{ i }}
-                                </td>
-                                <td class="border border-slate-700 p-2">
-                                    {{ offer.offerName }}
-                                </td>
-                                <td class="border border-slate-700 p-2">
-                                    {{ offer.price }}
-                                </td>
-                                <td class="border border-slate-700 p-2">
-                                    {{ offer.details }}
-                                </td>
-                                <td
-                                    class="border border-slate-700 p-2 text-center"
-                                >
-                                    <NavLink
-                                        class="font-semibold text-red-700 leading-tight"
-                                        :href="route('deleteOffer', offer.id)"
-                                    >
-                                        {{ langs.delete }}
-                                    </NavLink>
-                                </td>
-                            </tr>
-                        </tbody>
-                    </table>
+                <div
+                    v-else
+                    class="p-4 overflow-auto sm:p-8 bg-white shadow sm:rounded-lg"
+                >
+                    <AllOffers :langs="langs" :allOffers="allOffers" />
                 </div>
             </div>
         </div>
