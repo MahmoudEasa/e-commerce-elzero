@@ -2,10 +2,12 @@
 
 namespace App\Http\Controllers\Offers;
 
-use App\Models\Offer;
-use Illuminate\Support\Facades\Route;
-
 use App\Http\Controllers\Controller;
+use App\Http\Requests\OfferRequest;
+use App\Models\Offer;
+
+use Mcamara\LaravelLocalization\Facades\LaravelLocalization;
+use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Http\Request;
 use Inertia\Inertia;
@@ -13,15 +15,37 @@ use Inertia\Inertia;
 class CrudController extends Controller
 {
 
+    public function getLocalizedLangsForNavBar() {
+        $getLocalized = '';
+        foreach(LaravelLocalization::getSupportedLocales() as $localeCode => $properties) {
+            $getLocalized .= "<li><a href='".LaravelLocalization::getLocalizedURL($localeCode, null, [], true)."'>$properties[native]</a></li>";
+        };
+        return $getLocalized;
+    }
+
     public function show()
     {
-        return Inertia::render('Offers/offers');
+        $currentLocale = LaravelLocalization::getCurrentLocale();
+        $allOffers = Offer::select(
+            "id",
+            "offerName_$currentLocale as offerName",
+            "price",
+            "details_$currentLocale  as details"
+        )->get();
+
+        return Inertia::render('Offers/offers', [
+            'langs' => __('messages'),
+            'getLocalizedURL' => $this->getLocalizedLangsForNavBar(),
+            'allOffers' => $allOffers,
+        ]);
     }
 
     public function create()
     {
         return Inertia::render('Offers/offers', [
             'createOffer' => Route::has('offer.create'),
+            'langs' => __('messages'),
+            'getLocalizedURL' => $this->getLocalizedLangsForNavBar(),
         ]);
     }
 
@@ -32,28 +56,14 @@ class CrudController extends Controller
         return $allOffers;
     }
 
-    public function store(Request $request)
+    public function store(OfferRequest $request)
     {
-        $roles = $this -> getRoles();
-        $messages = $this -> getMessages();
-        $validated = $request->validate($roles, $messages);
+        $validated = $request->validated();
         Offer::create($validated);
     }
 
-    protected function getMessages() {
-        return [
-            'offerName.required' => 'أسم العرض مطلوب',
-            'offerName.unique' => 'أسم العرض موجود',
-            'price.required' => 'السعر مطلوب',
-            'price.numeric' => 'السعر يجب أن يكون أرقام',
-            'details.required' => 'التفاصيل مطلوبة',
-        ];
-    }
-    protected function getRoles() {
-        return [
-            'offerName' => ['bail', 'required', 'unique:offers', 'max:100'],
-            'price' => ['required', 'numeric'],
-            'details' => ['required'],
-        ];
+    public function delete($id)
+    {
+        Offer::destroy($id);
     }
 }

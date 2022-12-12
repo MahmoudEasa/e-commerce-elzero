@@ -12,6 +12,7 @@
         "laravel/sanctum": "^2.8",
         "laravel/socialite": "^5.5",
         "laravel/tinker": "^2.7",
+        "mcamara/laravel-localization": "^1.7",
         "tightenco/ziggy": "^1.0"
     },
     "require-dev": {

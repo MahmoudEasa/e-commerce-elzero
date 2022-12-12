@@ -15,9 +15,11 @@ class Offer extends Model
     // public $timestamps = false;
 
     protected $fillable = [
-        'offerName',
+        'offerName_en',
+        'offerName_ar',
         'price',
-        'details',
+        'details_en',
+        'details_ar',
         'created_at',
         'updated_at',
     ];

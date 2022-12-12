@@ -8,6 +8,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Redirect;
 use Inertia\Inertia;
+use Mcamara\LaravelLocalization\Facades\LaravelLocalization;
 
 class ProfileController extends Controller
 {
@@ -22,6 +23,14 @@ class ProfileController extends Controller
         return Inertia::render('Profile/Edit', [
             'mustVerifyEmail' => $request->user() instanceof MustVerifyEmail,
             'status' => session('status'),
+            'getLocalizedURL' => function () {
+                $getLocalized = '';
+                foreach(LaravelLocalization::getSupportedLocales() as $localeCode => $properties) {
+                    $getLocalized .= "<li><a href='".LaravelLocalization::getLocalizedURL($localeCode, null, [], true)."'>$properties[native]</a></li>";
+                };
+
+                return $getLocalized;
+            },
         ]);
     }
 
