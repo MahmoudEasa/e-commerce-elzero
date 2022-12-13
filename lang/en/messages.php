@@ -13,8 +13,10 @@ return [
     |
     */
 
-    "hello gus" => 'Hello GUS',
-    "welcome" => 'WELCOME',
+    'youtube' => 'Youtube',
+    'profile' => 'Profile',
+    'logout' => 'Log Out',
+    'login' => 'Log In',
 
     "offers" => 'Offers',
     "offerName" => 'Offer Name',

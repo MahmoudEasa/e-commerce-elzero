@@ -5,3 +5,7 @@
 html:lang(ar) {
     direction: rtl;
 }
+
+html:lang(ar) .text-left {
+    text-align: right;
+}

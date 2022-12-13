@@ -57,7 +57,6 @@ const createOffer = (routName, id = "") => {
 };
 
 const props = defineProps({
-    langs: Object,
     update: Boolean,
     updateData: {
         type: Object,
@@ -78,10 +77,10 @@ const props = defineProps({
     <section>
         <header>
             <h2 v-if="update" class="text-lg font-medium text-gray-900">
-                {{ langs.updateOffer }}
+                {{ $t("messages.updateOffer") }}
             </h2>
             <h2 v-else class="text-lg font-medium text-gray-900">
-                {{ langs.createOffer }}
+                {{ $t("messages.createOffer") }}
             </h2>
         </header>
 
@@ -91,8 +90,8 @@ const props = defineProps({
             style="background-color: #4caf50d1; border-radius: 10px"
             class="mt-6 p-4 text-white font-bold space-y-6"
         >
-            <p v-if="update">{{ langs.updatedSuccessfully }}</p>
-            <p v-else>{{ langs.createdSuccessfully }}</p>
+            <p v-if="update">{{ $t("messages.updatedSuccessfully") }}</p>
+            <p v-else>{{ $t("messages.createdSuccessfully") }}</p>
         </div>
 
         <form
@@ -106,7 +105,7 @@ const props = defineProps({
         >
             <!-- Photo Input -->
             <div>
-                <InputLabel for="photo" :value="langs.photo" />
+                <InputLabel for="photo" :value="$t('messages.photo')" />
 
                 <TextInput
                     id="photo"
@@ -119,7 +118,10 @@ const props = defineProps({
             </div>
             <!-- offerName_en Input -->
             <div>
-                <InputLabel for="offerName_en" :value="langs.offerName_en" />
+                <InputLabel
+                    for="offerName_en"
+                    :value="$t('messages.offerName_en')"
+                />
 
                 <TextInput
                     id="offerName_en"
@@ -134,7 +136,10 @@ const props = defineProps({
             </div>
             <!-- offerName_ar Input -->
             <div>
-                <InputLabel for="offerName_ar" :value="langs.offerName_ar" />
+                <InputLabel
+                    for="offerName_ar"
+                    :value="$t('messages.offerName_ar')"
+                />
 
                 <TextInput
                     id="offerName_ar"
@@ -149,7 +154,7 @@ const props = defineProps({
             </div>
             <!-- price Input -->
             <div>
-                <InputLabel for="price" :value="langs.price" />
+                <InputLabel for="price" :value="$t('messages.price')" />
 
                 <TextInput
                     id="price"
@@ -164,7 +169,10 @@ const props = defineProps({
             </div>
             <!-- details_en Input -->
             <div>
-                <InputLabel for="details_en" :value="langs.details_en" />
+                <InputLabel
+                    for="details_en"
+                    :value="$t('messages.details_en')"
+                />
 
                 <TextInput
                     id="details_en"
@@ -179,7 +187,10 @@ const props = defineProps({
             </div>
             <!-- details_ar Input -->
             <div>
-                <InputLabel for="details_ar" :value="langs.details_ar" />
+                <InputLabel
+                    for="details_ar"
+                    :value="$t('messages.details_ar')"
+                />
 
                 <TextInput
                     id="details_ar"
@@ -196,11 +207,11 @@ const props = defineProps({
             <!-- Actions Buttons -->
             <div class="flex items-center gap-4">
                 <PrimaryButton v-if="update" :disabled="form.processing">{{
-                    langs.update
+                    $t("messages.update")
                 }}</PrimaryButton>
 
                 <PrimaryButton v-else :disabled="form.processing">{{
-                    langs.create
+                    $t("messages.create")
                 }}</PrimaryButton>
 
                 <Transition
@@ -212,14 +223,14 @@ const props = defineProps({
                         v-if="form.recentlySuccessful && update"
                         class="text-sm text-gray-600"
                     >
-                        {{ langs.updated }}
+                        {{ $t("messages.updated") }}
                     </p>
 
                     <p
                         v-else-if="form.recentlySuccessful"
                         class="text-sm text-gray-600"
                     >
-                        {{ langs.created }}
+                        {{ $t("messages.created") }}
                     </p>
                 </Transition>
             </div>

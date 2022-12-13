@@ -8,7 +8,6 @@ import { Head } from "@inertiajs/inertia-vue3";
 
 defineProps({
     createOffer: Boolean,
-    langs: Object,
     allOffers: Object,
     update: Boolean,
     updateData: Object,
@@ -16,7 +15,7 @@ defineProps({
 </script>
 
 <template>
-    <Head :title="langs.offers" />
+    <Head :title="$t('messages.offers')" />
 
     <AuthenticatedLayout>
         <template #header>
@@ -24,13 +23,13 @@ defineProps({
                 class="font-semibold text-xl text-gray-800 leading-tight"
                 :href="route('offers')"
             >
-                {{ langs.offers }}
+                {{ $t("messages.offers") }}
             </NavLink>
             <NavLink
                 class="font-semibold text-gray-800 leading-tight"
                 :href="route('offer.create')"
             >
-                {{ langs.createOffer }}
+                {{ $t("messages.createOffer") }}
             </NavLink>
         </template>
 
@@ -42,7 +41,6 @@ defineProps({
                 >
                     <CreateOffer
                         class="max-w-xl"
-                        :langs="langs"
                         :update="update"
                         :updateData="updateData"
                     />
@@ -52,7 +50,7 @@ defineProps({
                     v-else
                     class="p-4 overflow-auto sm:p-8 bg-white shadow sm:rounded-lg"
                 >
-                    <AllOffers :langs="langs" :allOffers="allOffers" />
+                    <AllOffers :allOffers="allOffers" />
                 </div>
             </div>
         </div>

@@ -2,7 +2,6 @@
 import NavLink from "@/Components/NavLink.vue";
 
 const props = defineProps({
-    langs: Object,
     allOffers: Array,
 });
 </script>
@@ -18,25 +17,25 @@ const props = defineProps({
                     class="border border-slate-600 p-2"
                     style="min-width: 200px"
                 >
-                    {{ langs.offerName }}
+                    {{ $t("messages.offerName") }}
                 </th>
                 <th
                     class="border border-slate-600 p-2"
                     style="min-width: 100px"
                 >
-                    {{ langs.price }}
+                    {{ $t("messages.price") }}
                 </th>
                 <th
                     class="border border-slate-600 p-2"
                     style="min-width: 200px"
                 >
-                    {{ langs.details }}
+                    {{ $t("messages.details") }}
                 </th>
                 <th
                     class="border border-slate-600 p-2"
                     style="min-width: 200px"
                 >
-                    {{ langs.actions }}
+                    {{ $t("messages.actions") }}
                 </th>
             </tr>
         </thead>
@@ -64,13 +63,13 @@ const props = defineProps({
                         class="font-semibold text-red-700 text-base leading-tight"
                         :href="route('deleteOffer', offer.id)"
                     >
-                        {{ langs.delete }}
+                        {{ $t("messages.delete") }}
                     </NavLink>
                     <NavLink
                         class="font-semibold text-green-700 text-base leading-tight"
                         :href="route('offer.edit', offer.id)"
                     >
-                        {{ langs.update }}
+                        {{ $t("messages.update") }}
                     </NavLink>
                 </td>
             </tr>
