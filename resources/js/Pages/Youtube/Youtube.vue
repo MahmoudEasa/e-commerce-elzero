@@ -15,7 +15,7 @@ const props = defineProps({
         <template #header>
             <NavLink
                 class="font-semibold text-xl text-gray-800 leading-tight"
-                :href="route('offers')"
+                :href="route('youtube')"
             >
                 Youtube
             </NavLink>

@@ -74,6 +74,9 @@ const showingNavigationDropdown = ref(false);
                                     </template>
 
                                     <template #content>
+                                        <DropdownLink :href="route('youtube')">
+                                            Youtube
+                                        </DropdownLink>
                                         <DropdownLink :href="route('offers')">
                                             Offers
                                         </DropdownLink>
@@ -166,6 +169,9 @@ const showingNavigationDropdown = ref(false);
                         </div>
 
                         <div class="mt-3 space-y-1">
+                            <ResponsiveNavLink :href="route('youtube')">
+                                Youtube
+                            </ResponsiveNavLink>
                             <ResponsiveNavLink :href="route('offers')">
                                 Offers
                             </ResponsiveNavLink>
