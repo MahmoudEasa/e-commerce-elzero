@@ -2,13 +2,33 @@
 
     namespace App\Http\Controllers\Front;
 
+    use App\Events\VideoViewer;
+    use App\Models\video;
+    use App\Traits\OfferTrait;
     use Illuminate\Routing\Controller;
+    use Inertia\Inertia;
 
     class UserController extends Controller {
-        public function __construct()
+        use OfferTrait;
+
+        // public function __construct()
+        // {
+        //     // Run Middleware On All Methods Without UserHome Method
+        //     // $this->middleware('auth')->except('HomePage');
+        // }
+
+
+        public function youtube()
         {
-            // Run Middleware On All Methods Without UserHome Method
-            // $this->middleware('auth')->except('HomePage');
+            $videoData = video::first();
+
+            event(new VideoViewer($videoData));
+
+            return Inertia::render('Youtube/Youtube', [
+                'getLocalizedURL' => $this->getLocalizedLangsForNavBar(),
+                'langs' => __('messages'),
+                'videoData' => $videoData,
+            ]);
         }
 
         // Login

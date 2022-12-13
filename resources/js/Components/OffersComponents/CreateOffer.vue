@@ -13,12 +13,13 @@ const detailsEnInput = ref(null);
 const detailsArInput = ref(null);
 
 const form = useForm({
+    id: props.updateData.id,
     offerName_en: props.updateData.offerName_en,
     offerName_ar: props.updateData.offerName_ar,
     price: props.updateData.price,
     details_en: props.updateData.details_en,
     details_ar: props.updateData.details_ar,
-    id: props.updateData.id,
+    photo: props.updateData.photo,
     success: false,
 });
 
@@ -67,6 +68,7 @@ const props = defineProps({
             price: "",
             details_en: "",
             details_ar: "",
+            photo: "",
         },
     },
 });
@@ -83,6 +85,7 @@ const props = defineProps({
             </h2>
         </header>
 
+        <!-- Is Successfully Message -->
         <div
             v-if="form.success"
             style="background-color: #4caf50d1; border-radius: 10px"
@@ -99,7 +102,22 @@ const props = defineProps({
                     : createOffer('createOffer')
             "
             class="mt-6 space-y-6"
+            enctype="multipart/form-data"
         >
+            <!-- Photo Input -->
+            <div>
+                <InputLabel for="photo" :value="langs.photo" />
+
+                <TextInput
+                    id="photo"
+                    @change="(e) => (form.photo = e.target.files[0])"
+                    type="file"
+                    class="mt-1 block w-full"
+                />
+
+                <InputError :message="form.errors.photo" class="mt-2" />
+            </div>
+            <!-- offerName_en Input -->
             <div>
                 <InputLabel for="offerName_en" :value="langs.offerName_en" />
 
@@ -114,6 +132,7 @@ const props = defineProps({
 
                 <InputError :message="form.errors.offerName_en" class="mt-2" />
             </div>
+            <!-- offerName_ar Input -->
             <div>
                 <InputLabel for="offerName_ar" :value="langs.offerName_ar" />
 
@@ -128,7 +147,7 @@ const props = defineProps({
 
                 <InputError :message="form.errors.offerName_ar" class="mt-2" />
             </div>
-
+            <!-- price Input -->
             <div>
                 <InputLabel for="price" :value="langs.price" />
 
@@ -143,7 +162,7 @@ const props = defineProps({
 
                 <InputError :message="form.errors.price" class="mt-2" />
             </div>
-
+            <!-- details_en Input -->
             <div>
                 <InputLabel for="details_en" :value="langs.details_en" />
 
@@ -158,6 +177,7 @@ const props = defineProps({
 
                 <InputError :message="form.errors.details_en" class="mt-2" />
             </div>
+            <!-- details_ar Input -->
             <div>
                 <InputLabel for="details_ar" :value="langs.details_ar" />
 
@@ -173,6 +193,7 @@ const props = defineProps({
                 <InputError :message="form.errors.details_ar" class="mt-2" />
             </div>
 
+            <!-- Actions Buttons -->
             <div class="flex items-center gap-4">
                 <PrimaryButton v-if="update" :disabled="form.processing">{{
                     langs.update

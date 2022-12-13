@@ -31,6 +31,7 @@ class ProfileController extends Controller
 
                 return $getLocalized;
             },
+            'langs' => __('messages'),
         ]);
     }
 

@@ -24,6 +24,7 @@ return [
     "details" => 'Details',
     "details_en" => 'Details EN',
     "details_ar" => 'Details AR',
+    "photo" => 'Add Image',
 
     "dashboard" => 'Dashboard',
     "actions" => 'Actions',

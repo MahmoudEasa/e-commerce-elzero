@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Offers;
 
 use App\Http\Controllers\Controller;
 use App\Http\Requests\OfferRequest;
+use App\Traits\OfferTrait;
 use App\Models\Offer;
 
 use Mcamara\LaravelLocalization\Facades\LaravelLocalization;
@@ -14,14 +15,7 @@ use Inertia\Inertia;
 
 class CrudController extends Controller
 {
-    public function getLocalizedLangsForNavBar() {
-        $getLocalized = '';
-        foreach(LaravelLocalization::getSupportedLocales() as $localeCode => $properties) {
-            $getLocalized .= "<li><a href='".LaravelLocalization::getLocalizedURL($localeCode, null, [], true)."'>$properties[native]</a></li>";
-        };
-        return $getLocalized;
-    }
-
+    use OfferTrait;
     public function showOffer()
     {
         $currentLocale = LaravelLocalization::getCurrentLocale();
@@ -29,6 +23,7 @@ class CrudController extends Controller
             "id",
             "offerName_$currentLocale as offerName",
             "price",
+            "photo",
             "details_$currentLocale  as details"
         )->get();
 
@@ -50,7 +45,15 @@ class CrudController extends Controller
 
     public function storeOffer(OfferRequest $request)
     {
-        Offer::create($request -> all());
+        $path = 'images/offers';
+        $file_name = $request -> photo ?
+            $this->saveImage($request -> photo, $path) :
+            "default.png";
+
+        Offer::create([
+            ...$request -> all(),
+            'photo' => $file_name,
+        ]);
     }
 
     public function editOffer($id)
@@ -69,12 +72,24 @@ class CrudController extends Controller
             return redirect('offers');
         }
     }
+
     public function updateOffer(OfferRequest $request)
     {
         $offer = Offer::find($request->id);
-        $offer->update($request -> all());
+        $path = 'images/offers';
+
+        $file_name =
+            $request->photo != $offer->photo ?
+            $this->saveImage($request->photo, $path) :
+            $offer->photo;
+
+        $offer->update([
+            ...$request -> all(),
+            'photo' => $file_name,
+        ]);
         return redirect()->route('offers');
     }
+
     public function deleteOffer($id)
     {
         $offer = Offer::find($id);

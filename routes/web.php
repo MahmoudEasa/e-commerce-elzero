@@ -3,6 +3,7 @@
 use App\Http\Controllers\Auth\SocialController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\Offers\CrudController;
+use App\Http\Controllers\Front\UserController;
 use Illuminate\Foundation\Application;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
@@ -58,6 +59,7 @@ Route::group(['prefix' => LaravelLocalization::setLocale(),'middleware' =>[ 'loc
             Route::get('/deleteOffer/{id}', [CrudController::class, 'deleteOffer'])->name('deleteOffer');
         });
 
+        Route::get('/youtube', [UserController::class, 'youtube'])->name('youtube');
         Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
         Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
         Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');

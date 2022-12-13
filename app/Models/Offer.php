@@ -20,6 +20,7 @@ class Offer extends Model
         'price',
         'details_en',
         'details_ar',
+        'photo',
         'created_at',
         'updated_at',
     ];
