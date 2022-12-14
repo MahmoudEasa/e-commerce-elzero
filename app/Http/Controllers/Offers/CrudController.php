@@ -16,7 +16,14 @@ use Inertia\Inertia;
 class CrudController extends Controller
 {
     use OfferTrait;
-    public function showOffer()
+    public function showOffers()
+    {
+        return Inertia::render('Offers/offers', [
+            'getLocalizedURL' => $this->getLocalizedLangsForNavBar(),
+        ]);
+    }
+
+    public function getOffers()
     {
         $currentLocale = LaravelLocalization::getCurrentLocale();
         $allOffers = Offer::select(
@@ -27,18 +34,24 @@ class CrudController extends Controller
             "details_$currentLocale  as details"
         )->get();
 
-        return Inertia::render('Offers/offers', [
-            'langs' => __('messages'),
-            'getLocalizedURL' => $this->getLocalizedLangsForNavBar(),
-            'allOffers' => $allOffers,
-        ]);
+        if($allOffers) {
+            return response() -> json([
+                'status' => true,
+                'allOffers' => $allOffers,
+            ]);
+        }else {
+            return response() -> json([
+                'status' => false,
+                'message' => __('messages.cannotGetDataTryAgain'),
+            ]);
+        }
+
     }
 
-    public function createOffer()
+    public function showCreateOffer()
     {
         return Inertia::render('Offers/offers', [
             'createOffer' => Route::has('offer.create'),
-            'langs' => __('messages'),
             'getLocalizedURL' => $this->getLocalizedLangsForNavBar(),
         ]);
     }
@@ -63,7 +76,6 @@ class CrudController extends Controller
         if($offer) {
             return Inertia::render('Offers/offers', [
                 'createOffer' => true,
-                'langs' => __('messages'),
                 'getLocalizedURL' => $this->getLocalizedLangsForNavBar(),
                 'update' => true,
                 'updateData' => $offer,
@@ -87,16 +99,29 @@ class CrudController extends Controller
             ...$request -> all(),
             'photo' => $file_name,
         ]);
-        return redirect()->route('offers');
     }
 
     public function deleteOffer($id)
     {
         $offer = Offer::find($id);
         if($offer) {
-            $offer->delete();
+            $deleted =  $offer->delete();
+            if($deleted) {
+                return response() -> json([
+                    'status' => true,
+                    'message' => __('messages.deleteSuccessfully'),
+                ]);
+            }else {
+                return response() -> json([
+                    'status' => false,
+                    'message' => __('messages.deletedNotSuccessfulTryAgain'),
+                ]);
+            }
         }else {
-            return redirect()->back();
+            return response() -> json([
+                'status' => false,
+                'message' => __('messages.thisOfferNotFound'),
+            ]);
         }
     }
 }

@@ -77,7 +77,7 @@ const showingNavigationDropdown = ref(false);
                                         <DropdownLink :href="route('youtube')">
                                             {{ $t("messages.youtube") }}
                                         </DropdownLink>
-                                        <DropdownLink :href="route('offers')">
+                                        <DropdownLink :href="route('showOffers')">
                                             {{ $t("messages.offers") }}
                                         </DropdownLink>
                                         <DropdownLink
@@ -172,7 +172,7 @@ const showingNavigationDropdown = ref(false);
                             <ResponsiveNavLink :href="route('youtube')">
                                 {{ $t("messages.youtube") }}
                             </ResponsiveNavLink>
-                            <ResponsiveNavLink :href="route('offers')">
+                            <ResponsiveNavLink :href="route('showOffers')">
                                 {{ $t("messages.offers") }}
                             </ResponsiveNavLink>
                             <ResponsiveNavLink :href="route('profile.edit')">

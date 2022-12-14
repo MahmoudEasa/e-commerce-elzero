@@ -43,6 +43,12 @@ return [
 
     "createdSuccessfully" => 'تم إضافة العرض بنجاح.',
     "updatedSuccessfully" => 'تم تحديث العرض بنجاح.',
+    "deleteSuccessfully" => 'تم حذف العرض بنجاح.',
+    "thisOfferNotFound" => 'هذا العرض غير موجود.',
+    "somthingIsWrong" => 'حدث خطأ ما.',
+    "deletedNotSuccessfulTryAgain" => 'لم يتم الحذف حاول مجدداً.',
+    "cannotGetDataTryAgain" => 'لم يتم جلب البيانات حاول مجدداً.',
+    "loading" => 'جار التحميل...',
 
 
     "required" => 'الحقل مطلوب.',

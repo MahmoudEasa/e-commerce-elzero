@@ -43,6 +43,12 @@ return [
 
     "createdSuccessfully" => 'Created Successfully.',
     "updatedSuccessfully" => 'Updated Successfully.',
+    "deleteSuccessfully" => 'Delete Successfully.',
+    "thisOfferNotFound" => 'This Offer Not Found.',
+    "somthingIsWrong" => 'Somthing Is wrong.',
+    "deletedNotSuccessfulTryAgain" => 'Deleted not successful, try again.',
+    "cannotGetDataTryAgain" => 'Cannot get data, try again.',
+    "loading" => 'Loading...',
 
 
     "required" => 'The :attribute field is required.',

@@ -1,12 +1,87 @@
-<script setup>
+<script>
 import NavLink from "@/Components/NavLink.vue";
+import axios from "axios";
 
-const props = defineProps({
-    allOffers: Array,
-});
+export default {
+    name: "AllOffers",
+    data() {
+        return {
+            isLoading: false,
+            isError: false,
+            isSuccess: false,
+            succesMessage: "",
+            errorMessage: "",
+            offers: [],
+        };
+    },
+    components: { NavLink },
+    computed: {},
+    methods: {
+        handleDelete(id) {
+            this.isLoading = true;
+            this.isSuccess = false;
+            this.isError = false;
+            axios
+                .delete(route("deleteOffer", id))
+                .then((data) => {
+                    this.isLoading = false;
+                    if(data.data.status == true) {
+                        const fillterd = this.offers.filter(offer => offer.id != id);
+                        this.offers = fillterd;
+                        this.isSuccess = true;
+                        this.succesMessage = data.data.message;
+                    }else {
+                        this.isError = true;
+                        this.errorMessage = data.data.message;
+                    }
+                })
+                .catch((error) => {
+                    this.isLoading = false;
+                    this.isError = true;
+                    console.log(error);
+                });
+        },
+    },
+    created() {
+        this.isLoading = true;
+        this.isSuccess = false;
+        this.isError = false;
+        axios.get(route('getOffers'))
+            .then((data) => {
+                this.isLoading = false;
+
+                if(data.data.status == true) {
+                    this.offers = data.data.allOffers;
+                }else {
+                    this.isError = true;
+                    this.errorMessage = data.data.message;
+                }
+            })
+            .catch(error => {
+                this.isLoading = false;
+                this.isError = true;
+                console.log(error);
+            })
+    },
+
+    
+};
 </script>
 
 <template>
+    <!-- Error Message -->
+    <div v-if="isError" class='text-center mb-4 text-red-600 font-bold text-lg'>
+        {{errorMessage ? errorMessage : $t("messages.somthingIsWrong") }}
+    </div>
+    <!-- Success Message -->
+    <div v-if="isSuccess" class='text-center mb-4 text-green-600 font-bold text-lg'>
+        {{succesMessage }}
+    </div>
+    <!-- Loading -->
+    <div v-if="isLoading" class='text-center mb-4 text-gray-600 font-bold text-lg'>
+        {{ $t("messages.loading") }}
+    </div>
+
     <table class="w-full border-collapse border border-slate-300">
         <thead class="bg-gray-700 text-white">
             <tr>
@@ -40,7 +115,7 @@ const props = defineProps({
             </tr>
         </thead>
         <tbody>
-            <tr v-for="(offer, i) in allOffers" :key="offer.id">
+            <tr v-for="(offer, i) in offers" :key="offer.id">
                 <td class="border border-slate-400 p-2 text-center">
                     {{ i }}
                 </td>
@@ -59,12 +134,12 @@ const props = defineProps({
                     {{ offer.details }}
                 </td>
                 <td class="border border-slate-400 text-center">
-                    <NavLink
+                    <button
                         class="font-semibold text-red-700 text-base leading-tight"
-                        :href="route('deleteOffer', offer.id)"
+                        @click="handleDelete(offer.id)"
                     >
                         {{ $t("messages.delete") }}
-                    </NavLink>
+                    </button>
                     <NavLink
                         class="font-semibold text-green-700 text-base leading-tight"
                         :href="route('offer.edit', offer.id)"

@@ -51,12 +51,13 @@ Route::group(['prefix' => LaravelLocalization::setLocale(),'middleware' =>[ 'loc
         })->middleware(['verified'])->name('dashboard');
 
         Route::group(['prefix' => 'offers'], function () {
-            Route::get('/', [CrudController::class, 'showOffer'])->name('offers');
-            Route::get('/create', [CrudController::class, 'createOffer'])->name('offer.create');
+            Route::get('/', [CrudController::class, 'showOffers'])->name('showOffers');
+            Route::get('/getOffers', [CrudController::class, 'getOffers'])->name('getOffers');
+            Route::get('/showCreateOffer', [CrudController::class, 'showCreateOffer'])->name('offer.create');
             Route::post('/createOffer', [CrudController::class, 'storeOffer'])->name('createOffer');
             Route::get('/edit/{id}', [CrudController::class, 'editOffer'])->name('offer.edit');
             Route::post('/updateOffer/{id}', [CrudController::class, 'updateOffer'])->name('updateOffer');
-            Route::get('/deleteOffer/{id}', [CrudController::class, 'deleteOffer'])->name('deleteOffer');
+            Route::delete('/deleteOffer/{id}', [CrudController::class, 'deleteOffer'])->name('deleteOffer');
         });
 
         Route::get('/youtube', [UserController::class, 'youtube'])->name('youtube');
