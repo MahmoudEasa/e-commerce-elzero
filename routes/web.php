@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\Auth\CustomAuth\CustomAuthController;
 use App\Http\Controllers\Auth\SocialController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\Offers\CrudController;
@@ -22,7 +23,6 @@ use Mcamara\LaravelLocalization\Facades\LaravelLocalization;
 
 Route::get('/redirect/{service}', [SocialController::class, 'redirect']);
 Route::get('/callback/{service}', [SocialController::class, 'callback']);
-
 
 Route::group(['prefix' => LaravelLocalization::setLocale(),'middleware' =>[ 'localeSessionRedirect','localizationRedirect','localeViewPath' ]],function() {
     Route::get('/', function () {
@@ -64,6 +64,12 @@ Route::group(['prefix' => LaravelLocalization::setLocale(),'middleware' =>[ 'loc
         Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
         Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
         Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
+
+        ######################### Begin Authentication && Guards #########################
+        Route::group(['middleware' => 'CheckAge'], function() {
+            Route::get('adults', [CustomAuthController::class, 'adult'])->name('adults');
+        });
+        ######################### End Authentication && Guards #########################
     });
 
 });
