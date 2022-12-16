@@ -34,7 +34,7 @@ Route::group(['prefix' => LaravelLocalization::setLocale(),'middleware' =>[ 'loc
         ]);
     });
 
-    Route::middleware('auth')->group(function () {
+    Route::middleware(['auth'])->group(function () {
         Route::get('/dashboard', function () {
             return Inertia::render('Dashboard', [
                 'getLocalizedURL' => function () {
@@ -66,12 +66,18 @@ Route::group(['prefix' => LaravelLocalization::setLocale(),'middleware' =>[ 'loc
         Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
 
         ######################### Begin Authentication && Guards #########################
+        ### Authentication ###
         Route::group(['middleware' => 'CheckAge'], function() {
             Route::get('adults', [CustomAuthController::class, 'adult'])->name('adults');
         });
-        ######################### End Authentication && Guards #########################
-    });
+        
+        ### Guards => Login Admin Or User ###
+            Route::get('user', [CustomAuthController::class, 'getUser'])->name('user');
+        });
+        
+        Route::get('admin', [CustomAuthController::class, 'getAdmin'])->middleware('auth:admin')->name('admin');
 
+        ######################### End Authentication && Guards #########################
 });
 
 require __DIR__.'/auth.php';

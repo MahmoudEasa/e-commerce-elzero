@@ -68,6 +68,7 @@ class Kernel extends HttpKernel
 
         // Custom Middleware
         'CheckAge' => \App\Http\Middleware\CustomMiddleware\CheckAge::class,
+        'CheckIsAdmin' => \App\Http\Middleware\CustomMiddleware\CheckIsAdmin::class,
 
         /**** OTHER MIDDLEWARE ****/
         'localize'                => \Mcamara\LaravelLocalization\Middleware\LaravelLocalizationRoutes::class,

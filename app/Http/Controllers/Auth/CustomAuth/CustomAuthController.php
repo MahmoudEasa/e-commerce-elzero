@@ -11,4 +11,10 @@ class CustomAuthController extends Controller
     public function adult() {
         return Inertia::render('CustomAuth/index');
     }
+    public function getUser() {
+        return Inertia::render('User/index');
+    }
+    public function getAdmin() {
+        return Inertia::render('Admin/index');
+    }
 }
