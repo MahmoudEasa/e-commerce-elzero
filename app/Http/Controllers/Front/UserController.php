@@ -3,6 +3,7 @@
     namespace App\Http\Controllers\Front;
 
     use App\Events\VideoViewer;
+    use App\Models\viewer;
     use App\Models\video;
     use App\Traits\OfferTrait;
     use Illuminate\Routing\Controller;
@@ -21,8 +22,9 @@
         public function youtube()
         {
             $videoData = video::first();
+            $viewer = viewer::get();
 
-            event(new VideoViewer($videoData));
+            event(new VideoViewer($videoData, $viewer));
 
             return Inertia::render('Youtube/Youtube', [
                 'getLocalizedURL' => $this->getLocalizedLangsForNavBar(),

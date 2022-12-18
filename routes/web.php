@@ -70,12 +70,14 @@ Route::group(['prefix' => LaravelLocalization::setLocale(),'middleware' =>[ 'loc
         Route::group(['middleware' => 'CheckAge'], function() {
             Route::get('adults', [CustomAuthController::class, 'adult'])->name('adults');
         });
-        
+
         ### Guards => Login Admin Or User ###
             Route::get('user', [CustomAuthController::class, 'getUser'])->name('user');
         });
-        
+
         Route::get('admin', [CustomAuthController::class, 'getAdmin'])->middleware('auth:admin')->name('admin');
+        Route::get('adminLogin', [CustomAuthController::class, 'adminLogin'])->name('adminLogin');
+        Route::post('saveAdminLogin', [CustomAuthController::class, 'saveAdminLogin'])->name('saveAdminLogin');
 
         ######################### End Authentication && Guards #########################
 });
