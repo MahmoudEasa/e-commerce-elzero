@@ -5,6 +5,7 @@ use App\Http\Controllers\Auth\SocialController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\Offers\CrudController;
 use App\Http\Controllers\Front\UserController;
+use App\Http\Controllers\Relation\RelationsController;
 use Illuminate\Foundation\Application;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
@@ -72,14 +73,25 @@ Route::group(['prefix' => LaravelLocalization::setLocale(),'middleware' =>[ 'loc
         });
 
         ### Guards => Login Admin Or User ###
-            Route::get('user', [CustomAuthController::class, 'getUser'])->name('user');
-        });
+        Route::get('user', [CustomAuthController::class, 'getUser'])->name('user');
+    });
 
-        Route::get('admin', [CustomAuthController::class, 'getAdmin'])->middleware('auth:admin')->name('admin');
-        Route::get('adminLogin', [CustomAuthController::class, 'adminLogin'])->name('adminLogin');
-        Route::post('saveAdminLogin', [CustomAuthController::class, 'saveAdminLogin'])->name('saveAdminLogin');
+    Route::get('admin', [CustomAuthController::class, 'getAdmin'])->middleware('auth:admin')->name('admin');
+    Route::get('adminLogin', [CustomAuthController::class, 'adminLogin'])->name('adminLogin');
+    Route::post('saveAdminLogin', [CustomAuthController::class, 'saveAdminLogin'])->name('saveAdminLogin');
 
-        ######################### End Authentication && Guards #########################
+    ######################### End Authentication && Guards #########################
+
+    ######################### Begin One To Many Relationship #########################
+    Route::get('hospital-has-many', [RelationsController::class, 'getHospitalDoctors']);
+    Route::get('hospital/{id}', [RelationsController::class, 'deleteHospital']);
+    Route::get('hospital-has-doctors', [RelationsController::class, 'getHospitalHasDoctors']);
+    Route::get('hospital-has-doctors-male', [RelationsController::class, 'getHospitalHasDoctorsAndMale']);
+    Route::get('hospital-not-has-doctors', [RelationsController::class, 'getHospitalNotHasDoctorsAnd']);
+    Route::get('doctors/services', [RelationsController::class, 'getDoctorsServices']);
+    Route::get('services/doctors', [RelationsController::class, 'getServicesDoctors']);
+
+    ######################### End One To Many Relationship #########################
 });
 
 require __DIR__.'/auth.php';
