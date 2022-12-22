@@ -26,13 +26,22 @@ class CrudController extends Controller
     public function getOffers()
     {
         $currentLocale = LaravelLocalization::getCurrentLocale();
+        // $allOffers = Offer::select(
+        //     "id",
+        //     "offerName_$currentLocale as offerName",
+        //     "price",
+        //     "photo",
+        //     "details_$currentLocale  as details"
+        // )->get();
+
+        ###################### Paginate result ######################
         $allOffers = Offer::select(
             "id",
             "offerName_$currentLocale as offerName",
             "price",
             "photo",
             "details_$currentLocale  as details"
-        )->get();
+        )->paginate(PAGINATION_COUNT);
 
         if($allOffers) {
             return response() -> json([

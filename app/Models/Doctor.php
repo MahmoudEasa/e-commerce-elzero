@@ -14,6 +14,7 @@ class Doctor extends Model
         'name',
         'title',
         'hospital_id',
+        'medical_id',
         'created_at',
         'updated_at',
     ];

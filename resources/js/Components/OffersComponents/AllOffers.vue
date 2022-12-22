@@ -1,6 +1,7 @@
 <script>
 import NavLink from "@/Components/NavLink.vue";
 import axios from "axios";
+import { TailwindPagination } from "laravel-vue-pagination";
 
 export default {
     name: "AllOffers",
@@ -12,9 +13,10 @@ export default {
             succesMessage: "",
             errorMessage: "",
             offers: [],
+            links: {},
         };
     },
-    components: { NavLink },
+    components: { NavLink, TailwindPagination },
     computed: {},
     methods: {
         handleDelete(id) {
@@ -25,12 +27,37 @@ export default {
                 .delete(route("deleteOffer", id))
                 .then((data) => {
                     this.isLoading = false;
-                    if(data.data.status == true) {
-                        const fillterd = this.offers.filter(offer => offer.id != id);
+                    if (data.data.status == true) {
+                        const fillterd = this.offers.filter(
+                            (offer) => offer.id != id
+                        );
                         this.offers = fillterd;
                         this.isSuccess = true;
                         this.succesMessage = data.data.message;
-                    }else {
+                    } else {
+                        this.isError = true;
+                        this.errorMessage = data.data.message;
+                    }
+                })
+                .catch((error) => {
+                    this.isLoading = false;
+                    this.isError = true;
+                    console.log(error);
+                });
+        },
+        getResult(page = 1) {
+            this.isLoading = true;
+            this.isSuccess = false;
+            this.isError = false;
+            axios
+                .get(route("getOffers", { page: page }))
+                .then((data) => {
+                    this.isLoading = false;
+
+                    if (data.data.status == true) {
+                        this.offers = data.data.allOffers.data;
+                        this.links = data.data.allOffers;
+                    } else {
                         this.isError = true;
                         this.errorMessage = data.data.message;
                     }
@@ -43,40 +70,28 @@ export default {
         },
     },
     created() {
-        this.isLoading = true;
-        this.isSuccess = false;
-        this.isError = false;
-        axios.get(route('getOffers'))
-            .then((data) => {
-                this.isLoading = false;
-
-                if(data.data.status == true) {
-                    this.offers = data.data.allOffers;
-                }else {
-                    this.isError = true;
-                    this.errorMessage = data.data.message;
-                }
-            })
-            .catch(error => {
-                this.isLoading = false;
-                this.isError = true;
-                console.log(error);
-            })
+        this.getResult();
     },
 };
 </script>
 
 <template>
     <!-- Error Message -->
-    <div v-if="isError" class='text-center mb-4 text-red-600 font-bold text-lg'>
-        {{errorMessage ? errorMessage : $t("messages.somthingIsWrong") }}
+    <div v-if="isError" class="text-center mb-4 text-red-600 font-bold text-lg">
+        {{ errorMessage ? errorMessage : $t("messages.somthingIsWrong") }}
     </div>
     <!-- Success Message -->
-    <div v-if="isSuccess" class='text-center mb-4 text-green-600 font-bold text-lg'>
-        {{succesMessage }}
+    <div
+        v-if="isSuccess"
+        class="text-center mb-4 text-green-600 font-bold text-lg"
+    >
+        {{ succesMessage }}
     </div>
     <!-- Loading -->
-    <div v-if="isLoading" class='text-center mb-4 text-gray-600 font-bold text-lg'>
+    <div
+        v-if="isLoading"
+        class="text-center mb-4 text-gray-600 font-bold text-lg"
+    >
         {{ $t("messages.loading") }}
     </div>
 
@@ -148,4 +163,8 @@ export default {
             </tr>
         </tbody>
     </table>
+
+    <div class="flex justify-center w-full items-center pt-5">
+        <TailwindPagination :data="links" @pagination-change-page="getResult" />
+    </div>
 </template>

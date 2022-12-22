@@ -22,6 +22,8 @@ use Mcamara\LaravelLocalization\Facades\LaravelLocalization;
 |
 */
 
+define('PAGINATION_COUNT', 3);
+
 Route::get('/redirect/{service}', [SocialController::class, 'redirect']);
 Route::get('/callback/{service}', [SocialController::class, 'callback']);
 
@@ -88,10 +90,12 @@ Route::group(['prefix' => LaravelLocalization::setLocale(),'middleware' =>[ 'loc
     Route::get('hospital-has-doctors', [RelationsController::class, 'getHospitalHasDoctors']);
     Route::get('hospital-has-doctors-male', [RelationsController::class, 'getHospitalHasDoctorsAndMale']);
     Route::get('hospital-not-has-doctors', [RelationsController::class, 'getHospitalNotHasDoctorsAnd']);
+    ######################### End One To Many Relationship #########################
+
+    ######################### Begin Many To Many Relationship #########################
     Route::get('doctors/services', [RelationsController::class, 'getDoctorsServices']);
     Route::get('services/doctors', [RelationsController::class, 'getServicesDoctors']);
-
-    ######################### End One To Many Relationship #########################
+    ######################### End Many To Many Relationship #########################
 });
 
 require __DIR__.'/auth.php';
