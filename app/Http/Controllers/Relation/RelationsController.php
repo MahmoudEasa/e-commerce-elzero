@@ -103,4 +103,12 @@ class RelationsController extends Controller
         $doctor ->services()->syncWithoutDetaching($request->servicesIds); // [Add] many to many insert and do not detach existing IDs that are missing from the given array
         return $request;
     }
+
+    ######################### Begin accessors and mutators #########################
+    public function accessorsGetDoctors()
+    {
+        $doctors = Doctor::select('id', 'name', 'gender')->get();
+        return $doctors;
+    }
+    ######################### End accessors and mutators #########################
 }

@@ -96,6 +96,10 @@ Route::group(['prefix' => LaravelLocalization::setLocale(),'middleware' =>[ 'loc
     Route::get('doctors/services', [RelationsController::class, 'getDoctorsServices']);
     Route::get('services/doctors', [RelationsController::class, 'getServicesDoctors']);
     ######################### End Many To Many Relationship #########################
+
+    ######################### Begin accessors and mutators #########################
+    Route::get('accessors', [RelationsController::class, 'accessorsGetDoctors']); // get data
+    ######################### End Many To Many Relationship #########################
 });
 
 require __DIR__.'/auth.php';

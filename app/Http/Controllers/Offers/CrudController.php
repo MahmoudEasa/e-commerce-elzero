@@ -6,7 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Http\Requests\OfferRequest;
 use App\Traits\OfferTrait;
 use App\Models\Offer;
-
+use App\Scopes\OfferScope;
 use Mcamara\LaravelLocalization\Facades\LaravelLocalization;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\Validator;
@@ -132,5 +132,21 @@ class CrudController extends Controller
                 'message' => __('messages.thisOfferNotFound'),
             ]);
         }
+    }
+
+    public function getAllInactiveOffers()
+    {
+        // where - whereNull - whereNotNull - whereIn
+        // Offer::whereNotNull('status')->get();
+        // Offer::whereNull('status')->get();
+        // $inactiveOffer = Offer::where('status', 0)->get();
+        // $inactiveOffer = Offer::inactive()->get();
+
+        #### Global Scope
+        // Offer::get();
+
+        #### Remove Global Scope
+        // Offer::withoutGlobalScope(OfferScope::class)->get();
+        // Offer::withoutGlobalScopes()->get();
     }
 }
